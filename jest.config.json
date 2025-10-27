@@ -1,0 +1,22 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "jsdom",
+  "roots": ["<rootDir>/tests"],
+  "testMatch": ["**/?(*.)+(spec|test).ts"],
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/$1"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/tests/setup.ts"],
+  "testPathIgnorePatterns": ["/node_modules/"],
+  "collectCoverageFrom": [
+    "app/**/*.ts",
+    "lib/**/*.ts",
+    "components/**/*.tsx",
+    "hooks/**/*.ts",
+    "!**/*.d.ts"
+  ]
+}

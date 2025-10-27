@@ -1,0 +1,20 @@
+# Lista de clientes para deploy automatizado
+# Formato: host:client_id:api_token[:user]
+# User é opcional (default: root)
+
+# São Paulo
+cliente1.sp.com:CLI001:token_cli001_abc123
+cliente2.sp.com:CLI002:token_cli002_def456
+cliente3.sp.com:CLI003:token_cli003_ghi789
+
+# Rio Grande do Sul
+cliente1.rs.com:CLI021:token_cli021_ijk123
+cliente2.rs.com:CLI022:token_cli022_lmn456
+
+# Santa Catarina
+cliente1.sc.com:CLI025:token_cli025_uvw345
+cliente2.sc.com:CLI026:token_cli026_xyz678
+
+# Paraná
+cliente1.pr.com:CLI029:token_cli029_ghi567
+cliente2.pr.com:CLI030:token_cli030_jkl890
