@@ -14,7 +14,7 @@ import {
 import { IntegratedDashboard } from '@/components/integrated-dashboard'
 import { AlertsView } from '@/components/alerts-view'
 import { HistoryView } from '@/components/history-view'
-import { ClientMap } from '@/components/client-map'
+import { MapView } from '@/components/map-view'
 import { SettingsDialog } from '@/components/settings-dialog'
 import { UserProfileDialog } from '@/components/user-profile-dialog'
 import { SecurityDialog } from '@/components/security-dialog'
@@ -103,7 +103,7 @@ export function DashboardContent({ activeView }: DashboardContentProps) {
         {activeView === 'dashboard' && <IntegratedDashboard />}
         {activeView === 'alerts' && <AlertsView />}
         {activeView === 'history' && <HistoryView />}
-        {activeView === 'map' && <ClientMap />}
+        {activeView === 'map' && <MapView key="map-view" />}
       </div>
 
       <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
