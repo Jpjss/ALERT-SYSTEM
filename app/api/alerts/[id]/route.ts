@@ -74,9 +74,10 @@ const mockAlerts = [
   },
 ]
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const alertId = Number.parseInt(params.id)
+    const { id } = await params
+    const alertId = Number.parseInt(id)
     const body = await request.json()
 
     // Find the alert
@@ -119,9 +120,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const alertId = Number.parseInt(params.id)
+    const { id } = await params
+    const alertId = Number.parseInt(id)
 
     // Find the alert
     const alertIndex = mockAlerts.findIndex((a) => a.id === alertId)

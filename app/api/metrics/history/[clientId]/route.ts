@@ -3,10 +3,10 @@ import { db } from "@/lib/db";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { clientId: string } }
+  { params }: { params: Promise<{ clientId: string }> }
 ) {
   try {
-    const clientId = params.clientId;
+    const { clientId } = await params;
     const hours = request.nextUrl.searchParams.get("hours") || '6'; // Padrão de 6 horas
 
     if (!clientId) {
@@ -27,6 +27,10 @@ export async function GET(
     `;
     
     const interval = `${parseInt(hours)} hours`;
+
+    if (!db) {
+      return NextResponse.json({ error: "Database not available" }, { status: 503 });
+    }
 
     const result = await db.query(query, [clientId, interval]);
 

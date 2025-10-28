@@ -15,14 +15,35 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import requests
+from pathlib import Path
+
+# Carrega variáveis de ambiente do arquivo .env
+def load_env():
+    env_path = Path(__file__).parent / '.env'
+    if env_path.exists():
+        with open(env_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ.setdefault(key.strip(), value.strip())
+
+load_env()
 
 # Configurações do banco de dados
 DB_CONFIG = {
     'host': os.getenv('DB_HOST', 'localhost'),
-    'database': os.getenv('DB_NAME', 'alerts_db'),
-    'user': os.getenv('DB_USER', 'postgres'),
-    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME', 'alert_system'),
+    'user': os.getenv('DB_USER', 'alert_user'),
+    'password': os.getenv('DB_PASSWORD', 'alert_secure_pass_2024'),
     'port': os.getenv('DB_PORT', '5432')
+}
+
+# Configurações da API
+API_CONFIG = {
+    'local_url': os.getenv('LOCAL_API_URL', 'http://localhost:3000'),
+    'azure_url': os.getenv('AZURE_API_URL', 'http://172.210.162.250:3000'),
+    'api_token': os.getenv('API_SECRET_TOKEN', 'your-secret-token-here'),
 }
 
 # Configurações de notificação
@@ -292,6 +313,36 @@ class NotificationService:
     def __init__(self, db: DatabaseConnection):
         self.db = db
     
+    def send_to_api(self, alert: Dict, api_url: str) -> bool:
+        """Envia alerta para API via HTTP"""
+        try:
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {API_CONFIG["api_token"]}'
+            }
+            
+            # Remove campos que não devem ser enviados
+            alert_data = alert.copy()
+            alert_data.pop('id', None)
+            
+            response = requests.post(
+                f"{api_url}/api/alerts",
+                headers=headers,
+                json=alert_data,
+                timeout=10
+            )
+            
+            if response.status_code in [200, 201]:
+                print(f"[SUCCESS] Alerta enviado para {api_url}")
+                return True
+            else:
+                print(f"[ERROR] Falha ao enviar para {api_url}: {response.status_code}")
+                return False
+                
+        except Exception as e:
+            print(f"[ERROR] Erro ao enviar para API {api_url}: {e}")
+            return False
+    
     def send_email(self, to_email: str, subject: str, body: str) -> bool:
         """Envia notificação por email"""
         try:
@@ -454,10 +505,19 @@ def main():
             notifier = NotificationService(db)
             
             for alert in monitor.alerts_created:
-                # Busca canais de notificação da regra
-                channels = ['email']  # Default
+                print(f"\n[INFO] Processando alerta: {alert['title']}")
                 
-                print(f"[INFO] Enviando notificações para: {alert['title']}")
+                # Envia para API local
+                print("[INFO] Enviando para servidor local...")
+                notifier.send_to_api(alert, API_CONFIG['local_url'])
+                
+                # Envia para API Azure
+                print("[INFO] Enviando para servidor Azure...")
+                notifier.send_to_api(alert, API_CONFIG['azure_url'])
+                
+                # Envia notificações por email/whatsapp (opcional)
+                channels = ['email']  # Default
+                print(f"[INFO] Enviando notificações por: {', '.join(channels)}")
                 notifier.notify_alert(alert, channels)
         
         print(f"\n[INFO] Monitor finalizado com sucesso")

@@ -1,6 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { mockAlerts } from "@/lib/mock-data"
 import { db, isDbAvailable } from "@/lib/db"
+import type { Server as SocketIOServer } from "socket.io"
+
+declare global {
+  var io: SocketIOServer | undefined
+}
 
 export async function GET(request: NextRequest) {
   try {
