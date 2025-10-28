@@ -14,18 +14,7 @@ interface Stats {
   unresolved: number
 }
 
-interface Alert {
-  id: number
-  client_name: string
-  client_id?: number
-  severity: "critical" | "high" | "medium" | "low"
-  title: string
-  alert_type?: string
-  description?: string
-  status: "open" | "in_progress" | "resolved" | "ignored"
-  created_at: string
-  updated_at?: string
-}
+import { Alert } from '@/lib/types'
 
 interface ChartDataPoint {
   date: string

@@ -64,6 +64,8 @@ export function NotificationHistory({ alertId }: NotificationHistoryProps) {
         const statusIcon =
           notification.status === "sent" ? CheckCircle2 : notification.status === "failed" ? XCircle : Clock
 
+        const StatusIcon = statusIcon
+
         return (
           <Card key={notification.id} className="p-4 bg-card border-border">
             <div className="flex items-start gap-3">
@@ -93,7 +95,7 @@ export function NotificationHistory({ alertId }: NotificationHistoryProps) {
                           : "bg-warning/10 text-warning border-warning/20"
                     }
                   >
-                    <statusIcon className="w-3 h-3 mr-1" />
+                    <StatusIcon className="w-3 h-3 mr-1" />
                     {notification.status === "sent"
                       ? "Enviado"
                       : notification.status === "failed"

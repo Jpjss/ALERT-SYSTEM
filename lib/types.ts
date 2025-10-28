@@ -6,7 +6,7 @@ export interface Alert {
   severity: "low" | "medium" | "high" | "critical"
   title: string
   description: string
-  status: "open" | "in_progress" | "resolved" | "dismissed"
+  status: "open" | "in_progress" | "resolved" | "ignored"
   created_at: string
   updated_at?: string
   assigned_to?: string | null

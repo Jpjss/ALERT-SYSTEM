@@ -17,18 +17,7 @@ import { Search, Filter, AlertCircle } from "lucide-react"
 import { AlertActionDialog } from "@/components/alert-action-dialog"
 import { QuickActionsMenu } from "@/components/quick-actions-menu"
 
-interface Alert {
-  id: number
-  client_id: string
-  client_name: string
-  alert_type: string
-  severity: "critical" | "high" | "medium" | "low"
-  title: string
-  description: string
-  status: "open" | "in_progress" | "resolved" | "ignored"
-  created_at: string
-  updated_at: string
-}
+import { Alert } from '@/lib/types'
 
 const severityColors = {
   critical: "bg-red-500",

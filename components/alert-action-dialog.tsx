@@ -22,18 +22,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { User, CheckCircle2, Clock, XCircle, UserPlus, MessageSquare } from "lucide-react"
 
-interface Alert {
-  id: number
-  client_id: string
-  client_name: string
-  alert_type: string
-  severity: "critical" | "high" | "medium" | "low"
-  title: string
-  description: string
-  status: "open" | "in_progress" | "resolved" | "ignored"
-  created_at: string
-  updated_at: string
-}
+import { Alert } from '@/lib/types'
 
 interface AlertActionDialogProps {
   alert: Alert | null

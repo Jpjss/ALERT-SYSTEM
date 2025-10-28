@@ -1,8 +1,12 @@
 import { Bell, Settings, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { UserMenu } from "@/components/user-menu"
+import { auth } from "@/auth"
 
-export function DashboardHeader() {
+export async function DashboardHeader() {
+  const session = await auth()
+
   return (
     <header className="border-b border-border bg-card">
       <div className="container mx-auto px-4 py-4">
@@ -25,6 +29,8 @@ export function DashboardHeader() {
             <Button variant="ghost" size="icon">
               <Settings className="w-5 h-5" />
             </Button>
+
+            {session?.user && <UserMenu user={session.user} />}
           </div>
         </div>
       </div>
